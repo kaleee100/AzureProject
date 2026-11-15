@@ -24,7 +24,7 @@ def HTTPTrigger(req: func.HttpRequest) -> func.HttpResponse:
     try:
         #Yhdistetään Cosmos DB:hen
         client = CosmosClient.from_connection_string(connection_string)
-        database = os.environ.get("counterpage-db")
+        database = client.get_database_client("counterpage-db")
         container = database.get_container_client("counter")
 
         #Luetaan nykyinen kävijänumero ("id": "1")
