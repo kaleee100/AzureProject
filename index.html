@@ -4,10 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+  </head>
+  <body>
     <h1>Welcome to My Website</h1>
     <section id="counter-section">
       <h2>Vierailijat</h2>
       <p>Olet vierailija numero: <span id="counter">Ladataan...</span></p>
-  </head>
-  <body></body>
+    </section>
+    <script>
+      window.addEventListener("DOMContentLoaded", (event) => {
+        getVisitorCount();
+      });
+
+      async function getVisitorCount() {
+        try {
+          const response = await fetch("/api/counter");
+          const data = await response.json();
+
+          document.getElementById("counter").innerText = data.count;
+        } catch (error) {
+          console.error("Virhe laskurin haussa:", error);
+          document.getElementById("counter").innerText = "virhe";
+        }
+      }
+    </script>
+  </body>
 </html>
