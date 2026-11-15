@@ -47,9 +47,11 @@ def HTTPTrigger(req: func.HttpRequest) -> func.HttpResponse:
             }
         )
     except Exception as e:
-        logging.error(f"Virhe tietokannan käsittelyssä: {str(e)}")
+        import traceback
+        error_msg = f"Virhe: {str(e)} | Stacktrace: {traceback.format_exc()}"
+        logging.error(error_msg)
         return func.HttpResponse(
-            json.dumps({"error": "Virhe tietokannan käsittelyssä."}),
+            json.dumps({"error": error_msg}),
             status_code=500,
             mimetype="application/json"
         )
