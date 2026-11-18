@@ -14,7 +14,7 @@ def HTTPTrigger(req: func.HttpRequest) -> func.HttpResponse:
 
     #Haetaan yhtesmerkkijono Azuren asetuksista
     connection_string = os.environ.get("CosmosDBConnectionString")
-
+    
     if not connection_string:
         return func.HttpResponse(
             json.dumps({"error": "CosmosDBConnectionString ympyristömuuttujaa ei ole asetettu."}),
@@ -47,11 +47,9 @@ def HTTPTrigger(req: func.HttpRequest) -> func.HttpResponse:
             }
         )
     except Exception as e:
-        import traceback
-        error_msg = f"Virhe: {str(e)} | Stacktrace: {traceback.format_exc()}"
-        logging.error(error_msg)
+        logging.error(f"Virhe tietokannan käsittelyssä: {str(e)}")
         return func.HttpResponse(
-            json.dumps({"error": error_msg}),
+            json.dumps({"error": str(e)}),
             status_code=500,
             mimetype="application/json"
         )
